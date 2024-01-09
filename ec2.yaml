@@ -3,17 +3,18 @@
   hosts: localhost
   connection: local
   gather_facts: False
+  become: yes
   tags: provisioning
 
   pre_tasks:
 
     - name: Gather facts
       setup:
-            
+
     - name: Print python version
       debug:
         msg: "Using Python {{ ansible_python_version }}"
-              
+
     - name: Install dependencies
       shell: "/usr/bin/python3.10 -m pip install {{ item }}"
       loop:
@@ -31,13 +32,13 @@
     region: ap-south-1
     security_group: ec2-security-group
     tag_name:
-      Name: mudit   
+      Name: mudit
 
   tasks:
     - name: Create a security group
       amazon.aws.ec2_group:
         name: "{{ security_group }}"
-        description: Security Group for webserver Servers
+        description: Security Group for web server Servers
         region: "{{ region }}"
         rules:
           - proto: tcp
@@ -51,7 +52,7 @@
           - proto: tcp
             from_port: 3000
             to_port: 3000
-            cidr_ip: 0.0.0.0/0  
+            cidr_ip: 0.0.0.0/0
           - proto: tcp
             from_port: 80
             to_port: 80
@@ -62,7 +63,7 @@
             cidr_ip: 0.0.0.0/0
         rules_egress:
           - proto: all
-            cidr_ip: 0.0.0.0/0   
+            cidr_ip: 0.0.0.0/0
       register: basic_firewall
 
     - name: Launch the new EC2 Instance
@@ -74,10 +75,7 @@
         region: "{{ region }}"
         key_name: "{{ keypair }}"
         count: "{{ count }}"
-<<<<<<< HEAD:ec2.yml
-=======
         tags: "{{ tag_name }}"
->>>>>>> 8a4f7adb77293a7d086f98dfa3d01770078bbc46:ec2.yaml
         user_data: |
           #!/bin/bash
           sudo apt update -y
