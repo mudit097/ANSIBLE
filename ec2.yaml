@@ -22,7 +22,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3.10
-    keypair: Mumbai
+    keypair: demo1
     instance_type: t2.micro
     image_id: ami-0f5ee92e2d63afc18
     wait: yes
@@ -31,7 +31,7 @@
     region: ap-south-1
     security_group: ec2-security-group
     tag_name:
-      Name: Aj-ec2   
+      Name: mudit   
 
   tasks:
     - name: Create a security group
@@ -84,5 +84,5 @@
           sudo apt install docker.io -y
           sudo systemctl start docker
           sudo systemctl enable docker
-          sudo docker run -d --name 2048 -p 3000:3000 sevenajay/2048:latest
+          sudo docker run -d --name 2048 -p 3000:3000 mudit097/2048:latest
       register: ec2
